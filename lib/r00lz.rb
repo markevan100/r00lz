@@ -7,15 +7,24 @@ module R00lz
 
   class App
     def call(env)
-      klass, action = controller_and_action(env)
-      text = klass.new(env).send(action)
-      [200,
-        { 'Content-Type' => 'text/html' },
-        [text]
-      ]
+      begin
+        klass, action = controller_and_action(env)
+        text = klass.new(env).send(action)
+        [200,
+          { 'Content-Type' => 'text/html' },
+          [text]
+        ]
+      rescue
+        [200,
+          { 'Content-Type' => 'text/html' },
+          ['Sorry! R00lz could not locate the page you requested. Wish this were working better!']
+        ]
+      end
     end
 
     def controller_and_action(env)
+      return [Object.const_get('HomeController'), 'index'] if env['PATH_INFO'] == '/'
+
       _, controller, action, after = env['PATH_INFO'].split('/')
       controller = controller.capitalize + 'Controller'
       [Object.const_get(controller), action]
