@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 require_relative "r00lz/version"
+require_relative "r00lz/routing"
+require_relative "r00lz/util"
+require_relative "r00lz/dependencies"
 
 module R00lz
   class Error < StandardError; end
@@ -20,14 +23,6 @@ module R00lz
           ['Sorry! R00lz could not locate the page you requested. Wish this were working better!']
         ]
       end
-    end
-
-    def controller_and_action(env)
-      return [Object.const_get('HomeController'), 'index'] if env['PATH_INFO'] == '/'
-
-      _, controller, action, after = env['PATH_INFO'].split('/')
-      controller = controller.capitalize + 'Controller'
-      [Object.const_get(controller), action]
     end
   end
 

@@ -1,4 +1,4 @@
-module Rulers
+module R00lz
   def self.to_underscore(string)
     string.gsub(/::/, '/').
       gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
